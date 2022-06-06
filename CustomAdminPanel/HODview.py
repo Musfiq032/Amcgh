@@ -3,13 +3,14 @@ from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
-# from student_management_app.forms import AddStudentForm, EditStudentForm
-#
-# from student_management_app.models import CustomUser, Course, Subjects, Staffs, Students, SessionYearModel
+from CustomAdminPanel.forms import AddDoctorForm, EditDoctorForm
+
+from CustomAdminPanel.models import CustomUser, Doctors, Departments
 
 
 def admin_home(request):
     return render(request, 'hod_template/home_content.html')
+
 
 #
 # def add_staff(request):
@@ -57,54 +58,54 @@ def admin_home(request):
 #             return HttpResponseRedirect(reverse("add_course"))
 #
 #
-# def add_student(request):
-#     form = AddStudentForm()
-#     return render(request, "hod_template/add_student_template.html", {"form": form})
+def add_doctor(request):
+    form = AddDoctorForm()
+    return render(request, "hod_template/add_doctor_template.html", {"form": form})
+
+
 #
-#
-# #
-# def add_student_save(request):
-#     if request.method != "POST":
-#         return HttpResponse("Method Not Allowed")
-#     else:
-#         form = AddStudentForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             first_name = form.cleaned_data["first_name"]
-#             last_name = form.cleaned_data["last_name"]
-#             username = form.cleaned_data["username"]
-#             email = form.cleaned_data["email"]
-#             password = form.cleaned_data["password"]
-#             address = form.cleaned_data["address"]
-#             session_year_id = form.cleaned_data["session_year_id"]
-#             course_id = form.cleaned_data["course"]
-#             sex = form.cleaned_data["sex"]
-#
-#             profile_pic = request.FILES['profile_pic']
-#             fs = FileSystemStorage()
-#             filename = fs.save(profile_pic.name, profile_pic)
-#             profile_pic_url = fs.url(filename)
-#
-#             try:
-#                 user = CustomUser.objects.create_user(username=username, password=password, email=email,
-#                                                       last_name=last_name, first_name=first_name, user_type=3)
-#                 user.students.address = address
-#                 course_obj = Course.objects.get(id=course_id)
-#                 user.students.course_id = course_obj
-#                 session_year = SessionYearModel.objects.get(id=session_year_id)
-#                 user.students.session_year_id = session_year
-#                 user.students.gender = sex
-#                 user.students.profile_pic = profile_pic_url
-#                 user.save()
-#                 messages.success(request, "Successfully Added Student")
-#                 return HttpResponseRedirect(reverse("add_student"))
-#             except:
-#                 messages.error(request, "Failed to Add Student")
-#                 return HttpResponseRedirect(reverse("add_student"))
-#         else:
-#             form = AddStudentForm(request.POST)
-#             return render(request, "hod_template/add_student_template.html", {"form": form})
-#
-#
+def add_doctor_save(request):
+    if request.method != "POST":
+        return HttpResponse("Method Not Allowed")
+    else:
+        form = AddDoctorForm(request.POST, request.FILES)
+        if form.is_valid():
+            first_name = form.cleaned_data["first_name"]
+            last_name = form.cleaned_data["last_name"]
+            username = form.cleaned_data["username"]
+            email = form.cleaned_data["email"]
+            password = form.cleaned_data["password"]
+            address = form.cleaned_data["address"]
+            department_id = form.cleaned_data["department"]
+            designation = form.cleaned_data["designation"]
+            degree = form.cleaned_data["degree"]
+            sex = form.cleaned_data["sex"]
+
+            profile_pic = request.FILES['profile_pic']
+            fs = FileSystemStorage()
+            filename = fs.save(profile_pic.name, profile_pic)
+            profile_pic_url = fs.url(filename)
+
+            try:
+                user = CustomUser.objects.create_user(username=username, password=password, email=email,
+                                                      last_name=last_name, first_name=first_name, user_type=2)
+                user.students.address = address
+                department_obj = Departments.objects.get(id=department_id)
+                user.doctors.department_id = department_obj
+                user.doctors.designation = designation
+                user.doctors.degree = degree
+                user.doctors.gender = sex
+                user.doctors.profile_pic = profile_pic_url
+                user.save()
+                messages.success(request, "Successfully Added Doctor")
+                return HttpResponseRedirect(reverse("add_doctor"))
+            except:
+                messages.error(request, "Failed to Add Student")
+                return HttpResponseRedirect(reverse("add_doctor"))
+        else:
+            form = AddDoctorForm(request.POST)
+            return render(request, "hod_template/add_doctor_template.html", {"form": form})
+
 # def add_subject(request):
 #     courses = Course.objects.all()
 #     staffs = CustomUser.objects.filter(user_type=2)
