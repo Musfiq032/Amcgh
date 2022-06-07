@@ -1,6 +1,6 @@
 {% extends 'hod_template/base_template.html' %}
 {% block page_title %}
-Add Student
+Add Doctor
 {% endblock page_title %}
 {% block main_content %}
     <!-- Main content -->
@@ -11,12 +11,12 @@ Add Student
             <!-- general form elements -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Add Student</h3>
+                <h3 class="card-title">Add Doctor</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-                {% url 'add_student_save' as action_path %}
-                {% include 'hod_template/form_template.html' with messages=messages form=form action_path=action_path button_text="Add Student" %}
+                {% url 'add_doctor_save' as action_path %}
+                {% include 'hod_template/form_template.html' with messages=messages form=form action_path=action_path button_text="Add Doctor" %}
             </div>
             <!-- /.card -->
 

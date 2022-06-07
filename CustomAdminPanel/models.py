@@ -47,5 +47,3 @@ class Doctors(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
-    def get_absolute_url(self):
-        return reverse("Home:doctor-detail", kwargs={"id": self.id})

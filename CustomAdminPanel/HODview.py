@@ -39,25 +39,34 @@ def admin_home(request):
 #             return HttpResponseRedirect(reverse("add_staff"))
 #
 #
-# def add_course(request):
-#     return render(request, "hod_template/add_course_template.html")
-#
-#
-# def add_course_save(request):
-#     if request.method != "POST":
-#         return HttpResponse("Method Not Allowed")
-#     else:
-#         course = request.POST.get("course")
-#         try:
-#             course_model = Course(course_name=course)
-#             course_model.save()
-#             messages.success(request, "Successfully Added Course")
-#             return HttpResponseRedirect(reverse("add_course"))
-#         except:
-#             messages.error(request, "Failed To Add Course")
-#             return HttpResponseRedirect(reverse("add_course"))
-#
-#
+def add_department(request):
+    return render(request, "hod_template/add_department_template.html")
+
+
+def add_department_save(request):
+    if request.method != "POST":
+        return HttpResponse("Method Not Allowed")
+    else:
+        department_name = request.POST.get("department_name")
+        department_short_description = request.POST.get("department_short_description")
+        department_description = request.POST.get("department_description")
+
+        department_image = request.FILES.get('department_image')
+
+        try:
+            department_model = Departments(department_name=department_name,
+                                           department_short_description=department_short_description,
+                                           department_description=department_description,
+                                           department_image=department_image)
+
+            department_model.save()
+            messages.success(request, "Successfully Added Department")
+            return HttpResponseRedirect(reverse("add_department"))
+        except:
+            messages.error(request, "Failed To Add Department")
+            return HttpResponseRedirect(reverse("add_department_save"))
+
+
 def add_doctor(request):
     form = AddDoctorForm()
     return render(request, "hod_template/add_doctor_template.html", {"form": form})
@@ -79,7 +88,7 @@ def add_doctor_save(request):
             department_id = form.cleaned_data["department"]
             designation = form.cleaned_data["designation"]
             degree = form.cleaned_data["degree"]
-            sex = form.cleaned_data["sex"]
+            gender = form.cleaned_data["sex"]
 
             profile_pic = request.FILES['profile_pic']
             fs = FileSystemStorage()
@@ -89,22 +98,24 @@ def add_doctor_save(request):
             try:
                 user = CustomUser.objects.create_user(username=username, password=password, email=email,
                                                       last_name=last_name, first_name=first_name, user_type=2)
-                user.students.address = address
+
+                user.doctors.address = address
                 department_obj = Departments.objects.get(id=department_id)
                 user.doctors.department_id = department_obj
                 user.doctors.designation = designation
                 user.doctors.degree = degree
-                user.doctors.gender = sex
+                user.doctors.gender = gender
                 user.doctors.profile_pic = profile_pic_url
                 user.save()
                 messages.success(request, "Successfully Added Doctor")
                 return HttpResponseRedirect(reverse("add_doctor"))
             except:
-                messages.error(request, "Failed to Add Student")
+                messages.error(request, "Failed to Add Doctor")
                 return HttpResponseRedirect(reverse("add_doctor"))
         else:
             form = AddDoctorForm(request.POST)
             return render(request, "hod_template/add_doctor_template.html", {"form": form})
+
 
 # def add_subject(request):
 #     courses = Course.objects.all()
@@ -148,9 +159,9 @@ def add_doctor_save(request):
 #     return render(request, 'hod_template/manage_course_template.html', {'course': course})
 #
 #
-# def manage_subject(request):
-#     subjects = Subjects.objects.all()
-#     return render(request, 'hod_template/manage_subject_template.html', {'subjects': subjects})
+def manage_department(request):
+    department = Departments.objects.all()
+    return render(request, 'hod_template/manage_department_template.html', {'department': department})
 #
 #
 # def edit_staff(request, staff_id):
