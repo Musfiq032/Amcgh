@@ -1,15 +1,17 @@
 from django.shortcuts import render, HttpResponse
 from .models import Doctor, Department, service, news, Author, Category
-from .forms import DepartmentForm, ServiceForm, DoctorForm
+from .forms import DepartmentForm, ServiceForm
+from CustomAdminPanel.models import Doctors,Departments
+
 from django.db.models import Q
 
 
 # Create your views here.
 
 def home_view(request):
-    department_home_view = Department.objects.all()[:2]
+    department_home_view = Departments.objects.all()[:2]
     service_home_view = service.objects.all()[:8]
-    doctor_list = Doctor.objects.all()
+    doctor_list = Doctors.objects.all()
     context = {
         'service_list': service_home_view,
         'doctor_list': doctor_list,

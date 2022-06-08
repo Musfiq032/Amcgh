@@ -36,29 +36,31 @@ Manage Student
                       <th>Address</th>
                       <th>Gender</th>
                       <th>Profile Pic</th>
-                      <th>Session</th>
-                      <th>Course</th>
+                      <th>Department</th>
+                      <th>Degree</th>
+                      <th>Designation</th>
                       <th>Last Login</th>
                       <th>Date Joined</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                  {% for students in student %}
+                  {% for doctors in doctor %}
                     <tr>
-                      <td>{{ students.admin.id }}</td>
-                      <td>{{ students.admin.first_name}}</td>
-                      <td>{{ students.admin.last_name }}</td>
-                      <td>{{ students.admin.username }}</td>
-                      <td>{{ students.admin.email }}</td>
-                      <td>{{ students.address }}</td>
-                      <td>{{ students.gender }}</td>
-                      <td><img src="{{ students.profile_pic }} " style="width: 50px"></td>
-                      <td>{{ students.session_year_id.session_start_year }} to {{ students.session_year_id.session_end_year }}</td>
-                      <td>{{ students.course_id.course_name }}</td>
-                      <td>{{ students.admin.last_login }}</td>
-                      <td>{{ students.admin.date_joined }}</td>
-                      <td><a href="/edit_student/{{ students.admin.id }}" class="btn btn-outline-success">Edit</a> </td>
+                      <td>{{ doctors.admin.id }}</td>
+                      <td>{{ doctors.admin.first_name}}</td>
+                      <td>{{ doctors.admin.last_name }}</td>
+                      <td>{{ doctors.admin.username }}</td>
+                      <td>{{ doctors.admin.email }}</td>
+                      <td>{{ doctors.address }}</td>
+                      <td>{{ doctors.gender }}</td>
+                      <td><img src="{{ doctors.profile_pic.url }} " style="width: 50px"></td>
+                      <td>{{ doctors.department_id.department_name }}</td>
+                      <td>{{ doctors.degree }}</td>
+                      <td>{{ doctors.designation }}</td>
+                      <td>{{ doctors.admin.last_login }}</td>
+                      <td>{{ doctors.admin.date_joined }}</td>
+                      <td><a href="/edit_doctor/{{ doctors.admin.id }}" class="btn btn-outline-success">Edit</a> </td>
 
                                  </tr>
                   {% endfor %}
