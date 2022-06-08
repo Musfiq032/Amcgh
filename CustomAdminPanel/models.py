@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.urls import reverse
 
 
+
 # Create your models here.
 class CustomUser(AbstractUser):
     user_type_data = ((1, "HOD"), (2, "Doctor"))
@@ -24,7 +25,7 @@ class Departments(models.Model):
     department_name = models.CharField(max_length=255)
     department_short_description = models.CharField(max_length=255)
     department_description = models.TextField()
-    department_image = models.FileField()
+    department_image = models.FileField(upload_to='department')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()

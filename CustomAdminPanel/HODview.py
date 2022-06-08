@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.core.files.storage import FileSystemStorage
+from django.core.files.storage import FileSystemStorage,default_storage
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
@@ -52,13 +52,14 @@ def add_department_save(request):
         department_description = request.POST.get("department_description")
 
         department_image = request.FILES.get('department_image')
+        filename = default_storage.save(department_image.content,department_image)
+        department_image_url = default_storage.url(filename)
 
         try:
             department_model = Departments(department_name=department_name,
                                            department_short_description=department_short_description,
-                                           department_description=department_description,
-                                           department_image=department_image)
-
+                                           department_description=department_description)
+            department_model.department_image= department_image_url
             department_model.save()
             messages.success(request, "Successfully Added Department")
             return HttpResponseRedirect(reverse("add_department"))
