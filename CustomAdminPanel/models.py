@@ -47,6 +47,9 @@ class Doctors(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
+    def get_absolute_url(self):
+        return reverse("Home:doctor-detail", kwargs={"id": id})
+
 
 @receiver(post_save, sender=CustomUser)
 def create_user_profile(sender, instance, created, **kwargs):

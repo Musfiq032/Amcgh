@@ -95,27 +95,34 @@ def add_doctor_save(request):
             fs = FileSystemStorage()
             filename = fs.save(profile_pic.name, profile_pic)
             profile_pic_url = fs.url(filename)
-
-            user = CustomUser.objects.create_user(username=username, password=password, email=email,
+            try:
+                user = CustomUser.objects.create_user(username=username, password=password, email=email,
                                                   last_name=last_name, first_name=first_name, user_type=2)
 
-            user.doctors.address = address
-            department_obj = Departments.objects.get(id=department_id)
-            user.doctors.department_id = department_obj
-            user.doctors.designation = designation
-            user.doctors.degree = degree
-            user.doctors.gender = gender
-            user.doctors.profile_pic = profile_pic_url
-            user.save()
-            messages.success(request, "Successfully Added Doctor")
-            return HttpResponseRedirect(reverse("add_doctor"))
-            # except:
-            #     messages.error(request, "Failed to Add Doctor")
-            #     return HttpResponseRedirect(reverse("add_doctor"))
+                user.doctors.address = address
+                department_obj = Departments.objects.get(id=department_id)
+                user.doctors.department_id = department_obj
+                user.doctors.designation = designation
+                user.doctors.degree = degree
+                user.doctors.gender = gender
+                user.doctors.profile_pic = profile_pic_url
+                user.save()
+                messages.success(request, "Successfully Added Doctor")
+                return HttpResponseRedirect(reverse("add_doctor"))
+            except:
+                messages.error(request, "Failed to Add Doctor")
+                return HttpResponseRedirect(reverse("add_doctor"))
         else:
             form = AddDoctorForm(request.POST)
             return render(request, "hod_template/add_doctor_template.html", {"form": form})
 
+
+def dynamic_lookup_view_doc(request, id):
+    obj = Doctors.objects.get(id=id)
+    context = {
+        'object': obj
+    }
+    return render(request, "Doctors/doctor-single.html", context)
 
 # def add_subject(request):
 #     courses = Course.objects.all()

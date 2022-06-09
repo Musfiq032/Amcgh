@@ -1,6 +1,10 @@
 from Home.views import (home_view, blog_view, about_us_view, service_insert_view,
                         service_list_view,
-                        dynamic_lookup_view,dynamic_lookup_view_doc, dynamic_lookup_view_dept, doctor_list_view, department_list_view, department_list_view2)
+                        dynamic_lookup_view,
+                        dynamic_lookup_view_dept,
+                        doctor_list_view,
+                        department_list_view,
+                        department_list_view2,doctor_details)
 from django.urls import path
 from . import views
 
@@ -20,11 +24,12 @@ urlpatterns = [
     path('service-insert/', service_insert_view),
     path('news/', views.blog_list_view, name='news'),
     path('<int:id>/', views.dynamic_lookup_view, name='news-details'),
-    path('<int:id>/', dynamic_lookup_view_doc, name='doctor-detail'),
+    # path('<int:id>/', dynamic_lookup_view_doc, name='doctor-detail'),
     path('doctor-list/', doctor_list_view, name='doctor-list'),
     path('department/<int:id>/', dynamic_lookup_view_dept, name='department-detail'),
     path('department-list/', department_list_view, name='department-list'),
-    path('department-list-2/', department_list_view2, name='department-list-2')
+    path('department-list-2/', department_list_view2, name='department-list-2'),
+    path('doctor_details/<str:doctor_id>', doctor_details, name="doctor_details")
 
 
 ]

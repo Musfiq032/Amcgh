@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse
 from .models import Doctor, Department, service, news, Author, Category
 from .forms import DepartmentForm, ServiceForm
-from CustomAdminPanel.models import Doctors,Departments
+from CustomAdminPanel.models import Doctors, Departments
 
 from django.db.models import Q
 
@@ -59,12 +59,16 @@ from .forms import DepartmentForm
 #     return render(request, "Doctors/doc_insert.html", context)
 
 
-def dynamic_lookup_view_doc(request, id):
-    obj = Doctor.objects.get(id=id)
+def doctor_details(request, doctor_id):
+    request.session['doctor_id'] = doctor_id
+    doctor = Doctors.objects.get(admin=doctor_id)
     context = {
-        'object': obj
+        'doctor_details': doctor,
+        "id": doctor_id,
+        "username": doctor.admin.username
     }
-    return render(request, "Doctors/doctor-single.html", context)
+    return render(request, "Doctors/doctor-single.html",
+                 context)
 
 
 # def doctor_list_view(request):
@@ -191,20 +195,20 @@ def service_insert_view(request):
     context = {
         'form': form
     }
-    return render(request, 'Services/service-insert.html',context)
+    return render(request, 'Services/service-insert.html', context)
+
 
 def service_list_view(request):
-
-    if 'q'in request.GET:
-        q= request.GET['q']
-        service_list= service.objects.filter(service_name__icontains=q)
+    if 'q' in request.GET:
+        q = request.GET['q']
+        service_list = service.objects.filter(service_name__icontains=q)
     else:
-        service_list= service.objects.all()
+        service_list = service.objects.all()
 
-    context= {
+    context = {
         'service_list': service_list
     }
-    return render(request,"Services/service.html",context)
+    return render(request, "Services/service.html", context)
     # if request.method == 'GET':
     #     queryset = service.objects.all()
     #     context={
@@ -214,11 +218,10 @@ def service_list_view(request):
 
 
 def dynamic_lookup_service_view(request, id):
-
     obj = service.objects.get(id=id)
     ser_list = service.objects.all()
     context = {
         'object': obj,
         'service': ser_list
     }
-    return render(request,"Services/service-detail.html", context)
+    return render(request, "Services/service-detail.html", context)

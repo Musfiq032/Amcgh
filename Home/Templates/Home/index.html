@@ -858,87 +858,87 @@
                     </div>
                 </div>
                 <div class="row">
-                              <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>First Name</th>
-                      <th>Last Name</th>
-                      <th>Username</th>
-                      <th>Email</th>
-                      <th>Address</th>
-                      <th>Gender</th>
-                      <th>Profile Pic</th>
-                      <th>Department</th>
-                      <th>Degree</th>
-                      <th>Designation</th>
-                      <th>Last Login</th>
-                      <th>Date Joined</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  {% for doctors in doctor_list %}
-                    <tr>
-                      <td>{{ doctors.admin.id }}</td>
-                      <td>{{ doctors.admin.first_name}}</td>
-                      <td>{{ doctors.admin.last_name }}</td>
-                      <td>{{ doctors.admin.username }}</td>
-                      <td>{{ doctors.admin.email }}</td>
-                      <td>{{ doctors.address }}</td>
-                      <td>{{ doctors.gender }}</td>
-                      <td><img src="{{ doctors.profile_pic }} " style="width: 50px"></td>
-                      <td>{{ doctors.department_id.department_name }}</td>
-                      <td>{{ doctors.degree }}</td>
-                      <td>{{ doctors.designation }}</td>
-                      <td>{{ doctors.admin.last_login }}</td>
-                      <td>{{ doctors.admin.date_joined }}</td>
-                      <td><a href="/edit_doctor/{{ doctors.admin.id }}" class="btn btn-outline-success">Edit</a> </td>
-
-                                 </tr>
-                  {% endfor %}
-                    <tr>
-
-
-
-                  </tbody>
-                </table>
-              </div>
-
-{#                    <div class="col-12 no-padding">#}
+{#                              <div class="card-body table-responsive p-0">#}
+{#                <table class="table table-hover text-nowrap">#}
+{#                  <thead>#}
+{#                    <tr>#}
+{#                      <th>ID</th>#}
+{#                      <th>First Name</th>#}
+{#                      <th>Last Name</th>#}
+{#                      <th>Username</th>#}
+{#                      <th>Email</th>#}
+{#                      <th>Address</th>#}
+{#                      <th>Gender</th>#}
+{#                      <th>Profile Pic</th>#}
+{#                      <th>Department</th>#}
+{#                      <th>Degree</th>#}
+{#                      <th>Designation</th>#}
+{#                      <th>Last Login</th>#}
+{#                      <th>Date Joined</th>#}
+{#                      <th>Action</th>#}
+{#                    </tr>#}
+{#                  </thead>#}
+{#                  <tbody>#}
+{#                  {% for doctors in doctor_list %}#}
+{#                    <tr>#}
+{#                      <td>{{ doctors.admin.id }}</td>#}
+{#                      <td>{{ doctors.admin.first_name}}</td>#}
+{#                      <td>{{ doctors.admin.last_name }}</td>#}
+{#                      <td>{{ doctors.admin.username }}</td>#}
+{#                      <td>{{ doctors.admin.email }}</td>#}
+{#                      <td>{{ doctors.address }}</td>#}
+{#                      <td>{{ doctors.gender }}</td>#}
+{#                      <td><img src="{{ doctors.profile_pic }} " style="width: 50px"></td>#}
+{#                      <td>{{ doctors.department_id.department_name }}</td>#}
+{#                      <td>{{ doctors.degree }}</td>#}
+{#                      <td>{{ doctors.designation }}</td>#}
+{#                      <td>{{ doctors.admin.last_login }}</td>#}
+{#                      <td>{{ doctors.admin.date_joined }}</td>#}
+{#                      <td><a href="/edit_doctor/{{ doctors.admin.id }}" class="btn btn-outline-success">Edit</a> </td>#}
 {##}
-{#                        <div class="doctors-slider">#}
-{#                               {% for instance in doctor_list %}#}
-{#                            <div class="slide-item col-12">#}
-{#                                <div class="team-block p-relative">#}
-{#                                    <div class="inner-box">#}
-{#                                        <div class="image animate-img">#}
-{#                                            <img src="{{ instance.profile_pic.url }}" alt="img" class="full-width">#}
-{#                                            <div class="overlay-box">#}
-{#                                                <div class="overlay-inner p-relative full-height">#}
-{#                                                    <ul class="team-social-box custom">#}
-{#                                                        <li class="youtube"><a href="#" class="fab fa-youtube fs-16"></a></li>#}
-{#                                                        <li class="linkedin"><a href="#" class="fab fa-linkedin fs-16"></a></li>#}
-{#                                                        <li class="facebook"><a href="#" class="fab fa-facebook-f fs-16"></a></li>#}
-{#                                                        <li class="twitter"><a href="#" class="fab fa-twitter fs-16"></a></li>#}
-{#                                                    </ul>#}
-{#                                                </div>#}
-{#                                            </div>#}
-{#                                        </div>#}
-{#                                        <div class="lower-content p-relative text-center">#}
-{#                                            <h4><a href="{{ instance.get_absolute_url }}" class="text-custom-black fw-600 fs-20">{{ instance.admin.first_name }}</a></h4>#}
-{#                                            <p class="designation text-light-white">{{ instance.department_id.department_name}}</p>#}
-{##}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{#             {% endfor %}#}
-{#                        </div>#}
+{#                                 </tr>#}
+{#                  {% endfor %}#}
+{#                    <tr>#}
 {##}
 {##}
-{#                    </div>#}
+{##}
+{#                  </tbody>#}
+{#                </table>#}
+{#              </div>#}
+
+                    <div class="col-12 no-padding">
+
+                        <div class="doctors-slider">
+                               {% for doctors in doctor_list %}
+                            <div class="slide-item col-12">
+                                <div class="team-block p-relative">
+                                    <div class="inner-box">
+                                        <div class="image animate-img">
+                                            <img src="{{ doctors.profile_pic }}" alt="img" class="full-width">
+                                            <div class="overlay-box">
+                                                <div class="overlay-inner p-relative full-height">
+                                                    <ul class="team-social-box custom">
+                                                        <li class="youtube"><a href="#" class="fab fa-youtube fs-16"></a></li>
+                                                        <li class="linkedin"><a href="#" class="fab fa-linkedin fs-16"></a></li>
+                                                        <li class="facebook"><a href="#" class="fab fa-facebook-f fs-16"></a></li>
+                                                        <li class="twitter"><a href="#" class="fab fa-twitter fs-16"></a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="lower-content p-relative text-center">
+                                            <h4><a href="doctor_details/{{ doctors.admin.id }}" class="text-custom-black fw-600 fs-20">{{ doctors.admin.first_name}} {{ doctors.admin.last_name }}</a></h4>
+                                            <p class="designation text-light-white">{{ doctors.department_id.department_name }}</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+             {% endfor %}
+                        </div>
+
+
+                    </div>
 
                 </div>
             </div>

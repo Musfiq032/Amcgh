@@ -55,8 +55,6 @@ class Doctor(models.Model):
             img.thumbnail(output_size)
             img.save(self.doctor_image.path)
 
-    def get_absolute_url(self):
-        return reverse("Doctor:doctor-detail", kwargs={"id": self.id})  # /* dynamic url */
 
     def __str__(self):
         return self.title
