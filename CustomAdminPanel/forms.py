@@ -1,5 +1,5 @@
 from django import forms
-
+from ckeditor.fields import RichTextFormField, CKEditorWidget
 from CustomAdminPanel.models import Departments
 
 
@@ -47,7 +47,8 @@ class AddDoctorForm(forms.Form):
                                 widget=forms.TextInput(attrs={"class": "form-control"}))
     username = forms.CharField(label="Username", max_length=50, widget=forms.TextInput(attrs={"class": "form-control"}))
     address = forms.CharField(label="Address", max_length=50, widget=forms.TextInput(attrs={"class": "form-control"}))
-    designation = forms.CharField(label="Designation", max_length=50, widget=forms.TextInput(attrs={"class": "form-control"}))
+    designation = forms.CharField(label="Designation", max_length=50,
+                                  widget=forms.TextInput(attrs={"class": "form-control"}))
 
     department_list = []
     try:
@@ -79,7 +80,8 @@ class EditDoctorForm(forms.Form):
                                 widget=forms.TextInput(attrs={"class": "form-control"}))
     username = forms.CharField(label="Username", max_length=50, widget=forms.TextInput(attrs={"class": "form-control"}))
     address = forms.CharField(label="Address", max_length=50, widget=forms.TextInput(attrs={"class": "form-control"}))
-    designation = forms.CharField(label="Designation", max_length=50, widget=forms.TextInput(attrs={"class": "form-control"}))
+    designation = forms.CharField(label="Designation", max_length=50,
+                                  widget=forms.TextInput(attrs={"class": "form-control"}))
 
     department_list = []
     try:
@@ -101,3 +103,23 @@ class EditDoctorForm(forms.Form):
     degree = forms.CharField(label="Degree", widget=forms.TextInput(attrs={"class": "form-control "}))
     profile_pic = forms.FileField(label="Profile Pic", max_length=50,
                                   widget=forms.FileInput(attrs={"class": "form-control"}))
+
+
+class AddDepartmentForm(forms.Form):
+    department_name = forms.CharField(label="Department Name", max_length=50,
+                                      widget=forms.TextInput(attrs={"class": "form-control"}))
+    department_short_description = forms.CharField(label="Short Description", max_length=200,
+                                                   widget=forms.TextInput(attrs={"class": "form-control"}))
+    department_description = forms.CharField(label="Description", widget=CKEditorWidget())
+    department_image = forms.FileField(label="Department Image", max_length=50,
+                                       widget=forms.FileInput(attrs={"class": "form-control"}))
+
+
+class EditDepartmentForm(forms.Form):
+    department_name = forms.CharField(label="Department Name", max_length=50,
+                                      widget=forms.TextInput(attrs={"class": "form-control"}))
+    department_short_description = forms.CharField(label="Short Description", max_length=200,
+                                                   widget=forms.TextInput(attrs={"class": "form-control"}))
+    department_description = forms.CharField(label="Description", widget=CKEditorWidget())
+    department_image = forms.FileField(label="Department Image", max_length=50,
+                                       widget=forms.FileInput(attrs={"class": "form-control"}))

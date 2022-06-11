@@ -119,9 +119,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -135,4 +134,6 @@ LOGIN_REDIRECT_URL = '/home/'
 LOGIN_URL = 'Users/login/'
 
 AUTH_USER_MODEL = "CustomAdminPanel.CustomUser"
+
+CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 

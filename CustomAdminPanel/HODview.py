@@ -1,9 +1,9 @@
 from django.contrib import messages
-from django.core.files.storage import FileSystemStorage,default_storage
+from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
-from CustomAdminPanel.forms import AddDoctorForm, EditDoctorForm
+from CustomAdminPanel.forms import AddDoctorForm, EditDoctorForm, AddDepartmentForm, EditDepartmentForm
 
 from CustomAdminPanel.models import CustomUser, Doctors, Departments
 
@@ -40,32 +40,67 @@ def admin_home(request):
 #
 #
 def add_department(request):
-    return render(request, "hod_template/add_department_template.html")
+    form = AddDepartmentForm()
+    return render(request, "hod_template/add_department_template.html", {"form": form})
+
+    # return render(request, "hod_template/add_department_template.html")
 
 
 def add_department_save(request):
     if request.method != "POST":
         return HttpResponse("Method Not Allowed")
     else:
-        department_name = request.POST.get("department_name")
-        department_short_description = request.POST.get("department_short_description")
-        department_description = request.POST.get("department_description")
+        form = AddDepartmentForm(request.POST, request.FILES)
+        if form.is_valid():
+            department_name = form.cleaned_data["department_name"]
+            department_short_description = form.cleaned_data["department_short_description"]
+            department_description = form.cleaned_data["department_description"]
 
-        department_image = request.FILES.get('department_image')
-        filename = default_storage.save(department_image.content,department_image)
-        department_image_url = default_storage.url(filename)
+            department_image = request.FILES['department_image']
+            fs = FileSystemStorage()
+            filename = fs.save(department_image.name, department_image)
+            department_image_url = fs.url(filename)
 
-        try:
-            department_model = Departments(department_name=department_name,
-                                           department_short_description=department_short_description,
-                                           department_description=department_description)
-            department_model.department_image= department_image_url
-            department_model.save()
-            messages.success(request, "Successfully Added Department")
-            return HttpResponseRedirect(reverse("add_department"))
-        except:
-            messages.error(request, "Failed To Add Department")
-            return HttpResponseRedirect(reverse("add_department_save"))
+            try:
+                department_model = Departments(department_name=department_name,
+                                               department_short_description=department_short_description,
+                                               department_description=department_description)
+                department_model.department_image = department_image_url
+                department_model.save()
+                messages.success(request, "Successfully Added Department")
+                return HttpResponseRedirect(reverse("add_department"))
+            except:
+                messages.error(request, "Failed to Add Department")
+                return HttpResponseRedirect(reverse("add_department"))
+        else:
+            form = AddDepartmentForm(request.POST)
+            return render(request, "hod_template/add_department_template.html", {"form": form})
+
+
+# def add_department_save(request):
+#     if request.method != "POST":
+#         return HttpResponse("Method Not Allowed")
+#     else:
+#         department_name = request.POST.get("department_name")
+#         department_short_description = request.POST.get("department_short_description")
+#         department_description = request.POST.get("department_description")
+#
+#         department_image = request.FILES.get('department_image')
+#         fs = FileSystemStorage()
+#         filename = fs.save(department_image.name, department_image)
+#         department_image_url = fs.url(filename)
+#
+#         try:
+#             department_model = Departments(department_name=department_name,
+#                                            department_short_description=department_short_description,
+#                                            department_description=department_description)
+#             department_model.department_image = department_image_url
+#             department_model.save()
+#             messages.success(request, "Successfully Added Department")
+#             return HttpResponseRedirect(reverse("add_department"))
+#         except:
+#             messages.error(request, "Failed To Add Department")
+#             return HttpResponseRedirect(reverse("add_department_save"))
 
 
 def add_doctor(request):
@@ -97,7 +132,7 @@ def add_doctor_save(request):
             profile_pic_url = fs.url(filename)
             try:
                 user = CustomUser.objects.create_user(username=username, password=password, email=email,
-                                                  last_name=last_name, first_name=first_name, user_type=2)
+                                                      last_name=last_name, first_name=first_name, user_type=2)
 
                 user.doctors.address = address
                 department_obj = Departments.objects.get(id=department_id)
@@ -123,6 +158,7 @@ def dynamic_lookup_view_doc(request, id):
         'object': obj
     }
     return render(request, "Doctors/doctor-single.html", context)
+
 
 # def add_subject(request):
 #     courses = Course.objects.all()
@@ -224,8 +260,6 @@ def edit_doctor(request, doctor_id):
                   {"form": form, "id": doctor_id, "username": doctor.admin.username})
 
 
-#
-
 def edit_doctor_save(request):
     if request.method != "POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
@@ -284,41 +318,60 @@ def edit_doctor_save(request):
             return render(request, "hod_template/edit_doctor_template.html",
                           {"form": form, "id": doctor_id, "username": doctor.admin.username})
 
+
 #
-# def edit_subject(request, subject_id):
-#     subject = Subjects.objects.get(id=subject_id)
-#     courses = Course.objects.all()
-#     staffs = CustomUser.objects.filter(user_type=2)
-#     return render(request, "hod_template/edit_subject_template.html",
-#                   {"subject": subject, "staffs": staffs, "courses": courses, "id": subject_id})
+def edit_department(request, department_id):
+    request.session['department_id'] = department_id
+    department = Departments.objects.get(id=department_id)
+    form = EditDepartmentForm()
+    form.fields['department_name'].initial = department.department_name
+    form.fields['department_short_description'].initial = department.department_short_description
+    form.fields['department_description'].initial = department.department_description
+
+    return render(request, "hod_template/edit_department_template.html",
+                  {"form": form, "id": department_id, "departmentname": department.department_name})
+
+
 #
 #
-# def edit_subject_save(request):
-#     if request.method != "POST":
-#         return HttpResponse("<h2>Method Not Allowed</h2>")
-#     else:
-#         subject_id = request.POST.get("subject_id")
-#         subject_name = request.POST.get("subject_name")
-#         subject_code = request.POST.get("subject_code")
-#         staff_id = request.POST.get("staff")
-#         course_id = request.POST.get("course")
-#
-#         try:
-#             subject = Subjects.objects.get(id=subject_id)
-#             subject.subject_name = subject_name
-#             subject.subject_code = subject_code
-#             staff = CustomUser.objects.get(id=staff_id)
-#             subject.staff_id = staff
-#             course = Course.objects.get(id=course_id)
-#             subject.course_id = course
-#             subject.save()
-#
-#             messages.success(request, "Successfully Edited Subject")
-#             return HttpResponseRedirect(reverse("edit_subject", kwargs={"subject_id": subject_id}))
-#         except:
-#             messages.error(request, "Failed to Edit Subject")
-#             return HttpResponseRedirect(reverse("edit_subject", kwargs={"subject_id": subject_id}))
-#
+def edit_department_save(request):
+    if request.method != "POST":
+        return HttpResponse("<h2>Method Not Allowed</h2>")
+    else:
+        department_id = request.session.get('department_id')
+        form = EditDepartmentForm(request.POST, request.FILES)
+        if form.is_valid():
+            department_name = form.cleaned_data["department_name"]
+            department_short_description = form.cleaned_data["department_short_description"]
+            department_description = form.cleaned_data["department_description"]
+
+            if request.FILES.get('department_image', False):
+                department_image = request.FILES['department_image']
+                fs = FileSystemStorage()
+                filename = fs.save(department_image.name, department_image)
+                department_image_url = fs.url(filename)
+            else:
+                department_image_url = None
+
+
+            department = Departments.objects.get('department_id')
+            department.department_name = department_name
+            department.department_short_description = department_short_description
+            department.department_description = department_description
+            if department_image_url is not None:
+                department.department_image = department_image_url
+            department.save()
+            messages.success(request, "Successfully Edited Doctor Details")
+            return HttpResponseRedirect(reverse("edit_department", kwargs={"department_id": department_id}))
+            # except:
+            #     messages.error(request, "Failed to Edit Student")
+            #     return HttpResponseRedirect(reverse("edit_department", kwargs={"department_id": department_id}))
+        else:
+            form = EditDepartmentForm(request.POST)
+            department = Departments.objects.get(id=department_id)
+            return render(request, "hod_template/edit_department_template.html",
+                          {"form": form, "id": department_id, "department": department})
+
 #
 # def edit_course(request, course_id):
 #     course = Course.objects.get(id=course_id)
@@ -341,7 +394,7 @@ def edit_doctor_save(request):
 #         except:
 #             messages.error(request, "Failed to Edit Course")
 #             return HttpResponseRedirect(reverse("edit_course", kwargs={"course_id": course_id}))
-#
+
 #
 # def add_session_year(request):
 #     session = SessionYearModel.objects.all()

@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
+from ckeditor.fields import RichTextField
 
 
 
@@ -24,7 +25,7 @@ class Departments(models.Model):
     id = models.AutoField(primary_key=True)
     department_name = models.CharField(max_length=255)
     department_short_description = models.CharField(max_length=255)
-    department_description = models.TextField()
+    department_description = RichTextField(default="Nothing")
     department_image = models.FileField(upload_to='department')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
