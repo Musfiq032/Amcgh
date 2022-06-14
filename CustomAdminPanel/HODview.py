@@ -352,20 +352,19 @@ def edit_department_save(request):
                 department_image_url = fs.url(filename)
             else:
                 department_image_url = None
-
-
-            department = Departments.objects.get('department_id')
-            department.department_name = department_name
-            department.department_short_description = department_short_description
-            department.department_description = department_description
-            if department_image_url is not None:
-                department.department_image = department_image_url
-            department.save()
-            messages.success(request, "Successfully Edited Doctor Details")
-            return HttpResponseRedirect(reverse("edit_department", kwargs={"department_id": department_id}))
-            # except:
-            #     messages.error(request, "Failed to Edit Student")
-            #     return HttpResponseRedirect(reverse("edit_department", kwargs={"department_id": department_id}))
+            try:
+                department = Departments.objects.get(id=department_id)
+                department.department_name = department_name
+                department.department_short_description = department_short_description
+                department.department_description = department_description
+                if department_image_url is not None:
+                    department.department_image = department_image_url
+                department.save()
+                messages.success(request, "Successfully Edited Doctor Details")
+                return HttpResponseRedirect(reverse("edit_department", kwargs={"department_id": department_id}))
+            except:
+                messages.error(request, "Failed to Edit Student")
+                return HttpResponseRedirect(reverse("edit_department", kwargs={"department_id": department_id}))
         else:
             form = EditDepartmentForm(request.POST)
             department = Departments.objects.get(id=department_id)

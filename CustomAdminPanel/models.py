@@ -6,7 +6,6 @@ from django.urls import reverse
 from ckeditor.fields import RichTextField
 
 
-
 # Create your models here.
 class CustomUser(AbstractUser):
     user_type_data = ((1, "HOD"), (2, "Doctor"))
@@ -25,14 +24,11 @@ class Departments(models.Model):
     id = models.AutoField(primary_key=True)
     department_name = models.CharField(max_length=255)
     department_short_description = models.CharField(max_length=255)
-    department_description = RichTextField(default="Nothing")
+    department_description = RichTextField(blank=True, null=True)
     department_image = models.FileField(upload_to='department')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
-
-    def get_absolute_url(self):
-        return reverse("Home:department-detail", kwargs={"id": self.id})
 
 
 class Doctors(models.Model):
@@ -47,9 +43,6 @@ class Doctors(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
-
-    def get_absolute_url(self):
-        return reverse("Home:doctor-detail", kwargs={"id": id})
 
 
 @receiver(post_save, sender=CustomUser)

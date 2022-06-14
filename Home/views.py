@@ -83,17 +83,17 @@ def is_valid_queryparam(param):
 
 
 def doctor_list_view(request, *args, **kwargs):
-    qs = Doctor.objects.all()
+    qs = Doctors.objects.all()
 
-    department_list = Department.objects.values_list('name', flat=True)
+    department_list = Departments.objects.values_list('department_name', flat=True)
 
     name_contains_query = request.GET.get('name_contains')
     print(name_contains_query)
 
     if is_valid_queryparam(name_contains_query):
-        qs = qs.filter(department__name__icontains=name_contains_query)
+        qs = qs.filter(department_id__department_name__contains=name_contains_query)
     else:
-        qs = Doctor.objects.all()
+        qs = Doctors.objects.all()
 
     context = {
         'queryset': qs,
