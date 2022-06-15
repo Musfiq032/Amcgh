@@ -29,7 +29,7 @@ urlpatterns = [
     path('department/<int:id>/', dynamic_lookup_view_dept, name='department-detail'),
     path('department-list/', department_list_view, name='department-list'),
     path('department-list-2/', department_list_view2, name='department-list-2'),
-    path('<str:doctor_id>/', doctor_details, name="doctor_details")
+    path('doctor_details/<str:doctor_id>', doctor_details, name="doctor_details")
 
 
 ]

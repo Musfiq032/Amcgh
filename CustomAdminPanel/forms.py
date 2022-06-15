@@ -19,6 +19,7 @@ class AddDoctorForm(forms.Form):
     address = forms.CharField(label="Address", max_length=50, widget=forms.TextInput(attrs={"class": "form-control"}))
     designation = forms.CharField(label="Designation", max_length=50,
                                   widget=forms.TextInput(attrs={"class": "form-control"}))
+    research_publication = forms.CharField(label="Research & Publication", widget=CKEditorWidget())
 
     department_list = []
     try:
@@ -52,6 +53,7 @@ class EditDoctorForm(forms.Form):
     address = forms.CharField(label="Address", max_length=50, widget=forms.TextInput(attrs={"class": "form-control"}))
     designation = forms.CharField(label="Designation", max_length=50,
                                   widget=forms.TextInput(attrs={"class": "form-control"}))
+    research_publication = forms.CharField(label="Research & Publication", widget=CKEditorWidget())
 
     department_list = []
     try:

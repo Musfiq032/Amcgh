@@ -55,31 +55,13 @@
             <div class="topbar-style-1">
                 <div class="container">
                     <div class="row justify-content-center">
-                        <div class="col-lg-6 col-md-6 col-12">
-                            <div class="left-side">
-                                <div class="language-box">
-                                    <div class="language p-relative">
-                                        <img src="{% static '/images/flag.png' %}" alt="flag">
-                                        <label>
-                                            <select>
-                                                <option>English</option>
-                                                <option>German</option>
-                                                <option>Japanese</option>
-                                            </select>
-                                        </label>
-                                    </div>
-                                </div>
-                                <p class="text-custom-white no-margin">
-                                    Embankment Highway, Uttara-10, Dhaka-1230
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-12">
+
+                        <div class="col-lg-12 col-md-12 col-12 " style="float: right;">
                             <div class="right-side">
                                 <ul class="custom">
                                     {% if user.is_authenticated %}
-                                    <li><a class="text-custom-white" href="#">#</a></li>
-                                        <li><a class="text-custom-white" href="#">Log Out</a></li>
+                                    <li><a class="text-custom-white" href="#">{{ user.username }}</a></li>
+                                        <li><a class="text-custom-white" href="{% url 'logout' %}">Log Out</a></li>
                                         <li><a href="#" class="text-custom-white fs-14"><i class="fab fa-facebook-f"></i></a></li>
                                     <li><a href="#" class="text-custom-white fs-14"><i class="fab fa-twitter"></i></a></li>
                                     <li><a href="#" class="text-custom-white fs-14"><i class="fab fa-linkedin"></i></a></li>

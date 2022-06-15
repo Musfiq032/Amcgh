@@ -40,6 +40,7 @@ class Doctors(models.Model):
     gender = models.CharField(max_length=255)
     profile_pic = models.FileField()
     address = models.TextField()
+    research_publication = RichTextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()

@@ -125,6 +125,7 @@ def add_doctor_save(request):
             designation = form.cleaned_data["designation"]
             degree = form.cleaned_data["degree"]
             gender = form.cleaned_data["sex"]
+            research_publication = form.cleaned_data['research_publication']
 
             profile_pic = request.FILES['profile_pic']
             fs = FileSystemStorage()
@@ -140,6 +141,7 @@ def add_doctor_save(request):
                 user.doctors.designation = designation
                 user.doctors.degree = degree
                 user.doctors.gender = gender
+                user.doctors.research_publication = research_publication
                 user.doctors.profile_pic = profile_pic_url
                 user.save()
                 messages.success(request, "Successfully Added Doctor")
@@ -256,6 +258,8 @@ def edit_doctor(request, doctor_id):
     form.fields['degree'].initial = doctor.degree
     form.fields['department'].initial = doctor.department_id.id
     form.fields['sex'].initial = doctor.gender
+    form.fields['research_publication'].initial = doctor.research_publication
+
     return render(request, "hod_template/edit_doctor_template.html",
                   {"form": form, "id": doctor_id, "username": doctor.admin.username})
 
@@ -279,6 +283,7 @@ def edit_doctor_save(request):
             designation = form.cleaned_data["designation"]
             degree = form.cleaned_data["degree"]
             gender = form.cleaned_data["sex"]
+            research_publication = form.cleaned_data['research_publication']
 
             if request.FILES.get('profile_pic', False):
                 profile_pic = request.FILES['profile_pic']
@@ -303,6 +308,7 @@ def edit_doctor_save(request):
                 doctor.gender = gender
                 doctor.degree = degree
                 doctor.designation = designation
+                doctor.research_publication = research_publication
                 if profile_pic_url is not None:
                     doctor.profile_pic = profile_pic_url
                 doctor.save()
